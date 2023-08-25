@@ -7,7 +7,7 @@ use frontend\models\Student;
 /**
  * This is the ActiveQuery class for [[\frontend\models\Student]].
  *
- * @see \frontend\models\Student
+ * @see Student
  */
 class StudentQuery extends \yii\db\ActiveQuery
 {

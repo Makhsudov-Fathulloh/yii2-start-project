@@ -5,6 +5,7 @@ namespace frontend\models;
 use common\models\User;
 use frontend\models\query\TeacherQuery;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "{{%teacher}}".
@@ -60,9 +61,9 @@ class Teacher extends \yii\db\ActiveRecord
     /**
      * Gets query for [[User]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getUser(): \yii\db\ActiveQuery
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
@@ -71,7 +72,7 @@ class Teacher extends \yii\db\ActiveRecord
      * {@inheritdoc}
      * @return TeacherQuery the active query used by this AR class.
      */
-    public static function find(): query\TeacherQuery
+    public static function find(): TeacherQuery
     {
         return new TeacherQuery(get_called_class());
     }

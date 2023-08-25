@@ -60,6 +60,6 @@ class Student extends \yii\db\ActiveRecord
      */
     public static function find(): StudentQuery
     {
-        return new StudentQuery(get_called_class());
+        return new StudentQuery(get_called_class() );
     }
 }

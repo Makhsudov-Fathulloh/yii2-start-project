@@ -2,14 +2,15 @@
 
 namespace frontend\models\query;
 
-use frontend\models\Teacher;
+use frontend\models\Course;
+use yii\db\ActiveRecord;
 
 /**
- * This is the ActiveQuery class for [[\frontend\models\Teacher]].
+ * This is the ActiveQuery class for [[\frontend\models\Course]].
  *
- * @see Teacher
+ * @see Course
  */
-class TeacherQuery extends \yii\db\ActiveQuery
+class CourseQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -18,7 +19,7 @@ class TeacherQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Teacher[]|array
+     * @return Course[]|array
      */
     public function all($db = null)
     {
@@ -27,7 +28,7 @@ class TeacherQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Teacher|array|null
+     * @return array|ActiveRecord|null
      */
     public function one($db = null)
     {

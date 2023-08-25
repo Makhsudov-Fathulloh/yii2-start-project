@@ -2,17 +2,17 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Teacher;
-use frontend\models\search\TeacherSearch;
+use frontend\models\Course;
+use frontend\models\search\CourseSearch;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TeacherController implements the CRUD actions for Teacher model.
+ * CourseController implements the CRUD actions for Course model.
  */
-class TeacherController extends Controller
+class CourseController extends Controller
 {
     /**
      * @inheritDoc
@@ -23,7 +23,7 @@ class TeacherController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -33,13 +33,13 @@ class TeacherController extends Controller
     }
 
     /**
-     * Lists all Teacher models.
+     * Lists all Course models.
      *
      * @return string
      */
     public function actionIndex(): string
     {
-        $searchModel = new TeacherSearch();
+        $searchModel = new CourseSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -49,7 +49,7 @@ class TeacherController extends Controller
     }
 
     /**
-     * Displays a single Teacher model.
+     * Displays a single Course model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,13 +62,13 @@ class TeacherController extends Controller
     }
 
     /**
-     * Creates a new Teacher model.
+     * Creates a new Course model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Teacher();
+        $model = new Course();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -84,7 +84,7 @@ class TeacherController extends Controller
     }
 
     /**
-     * Updates an existing Teacher model.
+     * Updates an existing Course model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -104,7 +104,7 @@ class TeacherController extends Controller
     }
 
     /**
-     * Deletes an existing Teacher model.
+     * Deletes an existing Course model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -118,15 +118,15 @@ class TeacherController extends Controller
     }
 
     /**
-     * Finds the Teacher model based on its primary key value.
+     * Finds the Course model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Teacher the loaded model
+     * @return Course the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Teacher::findOne(['id' => $id])) !== null) {
+        if (($model = Course::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
