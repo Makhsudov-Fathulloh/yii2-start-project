@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\components\AuthorBehavior;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%question}}".
@@ -25,6 +27,16 @@ class Question extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%question}}';
+    }
+
+    public function behaviors(): array
+    {
+        return [
+            TimestampBehavior::class,
+            'author' => [
+                'class' => AuthorBehavior::class
+            ]
+        ];
     }
 
     /**

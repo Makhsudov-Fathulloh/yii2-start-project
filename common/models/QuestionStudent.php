@@ -2,11 +2,13 @@
 
 namespace common\models;
 
+use common\components\AuthorBehavior;
 use common\models\query\AnswerQuery;
 use common\models\query\QuestionStudentQuery;
 use frontend\models\QuestionQuery;
 use frontend\models\StudentQuery;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%question_student}}".
@@ -31,6 +33,16 @@ class QuestionStudent extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%question_student}}';
+    }
+
+    public function behaviors(): array
+    {
+        return [
+            TimestampBehavior::class,
+            'author' => [
+                'class' => AuthorBehavior::class
+            ]
+        ];
     }
 
     /**

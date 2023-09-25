@@ -3,6 +3,8 @@
 namespace common\components;
 
 use yii\data\ActiveDataFilter;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBearerAuth;
 use yii\filters\ContentNegotiator;
 use yii\filters\RateLimiter;
 use yii\helpers\ArrayHelper;
@@ -59,6 +61,14 @@ abstract class ApiController extends  Controller
             'rateLimiter' => [
                 'class' => RateLimiter::className(),
             ],
+
+            'authenticator' => [
+                'class' => CompositeAuth::class,
+                'only' => ['create', 'update', 'delete'],
+                'authMethods' => [
+                    HttpBearerAuth::class,
+                ],
+            ]
         ]);
     }
 

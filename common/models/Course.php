@@ -2,8 +2,10 @@
 
 namespace common\models;
 
+use common\components\AuthorBehavior;
 use common\models\query\CourseQuery;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 
 /**
@@ -27,6 +29,16 @@ class Course extends \yii\db\ActiveRecord
     public static function tableName(): string
     {
         return '{{%course}}';
+    }
+
+    public function behaviors(): array
+    {
+        return [
+            TimestampBehavior::class,
+            'author' => [
+                'class' => AuthorBehavior::class
+            ]
+        ];
     }
 
     /**
