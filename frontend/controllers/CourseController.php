@@ -2,50 +2,40 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Course;
-use frontend\models\search\CourseSearch;
 use Yii;
-use yii\web\Controller;
+use common\components\ApiController;
+use common\models\search\CourseSearch;
+use common\models\Course;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * CourseController implements the CRUD actions for Course model.
  */
-class CourseController extends Controller
+class CourseController extends ApiController
 {
     /**
-     * @inheritDoc
+     * @var
      */
-    public function behaviors(): array
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::class,
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
+    public $modelClass = 'common\models\Course';
+
+    /**
+     * @var
+     */
+    public $searchModel = 'common\models\search\CourseSearch';
 
     /**
      * Lists all Course models.
      *
-     * @return string
+     * @return ActiveDataProvider
      */
-    public function actionIndex(): string
+    public function actionIndex(): ActiveDataProvider
     {
         $searchModel = new CourseSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        return $dataProvider;
     }
 
     /**
@@ -64,50 +54,47 @@ class CourseController extends Controller
     /**
      * Creates a new Course model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return array|Course|string
      */
     public function actionCreate()
     {
         $model = new Course();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post(), '') && $model->save()) {
+                return $model;
             }
         } else {
-            $model->loadDefaultValues();
+            return $model->getErrors();
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return 'invalid request';
     }
 
     /**
      * Updates an existing Course model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|\yii\web\Response
+     * @return string|Course
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPut && $model->load($this->request->post(), '') && $model->save()) {
+
+            return $model;
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return 'invalid request';
     }
 
     /**
      * Deletes an existing Course model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return \yii\web\Response
+     * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

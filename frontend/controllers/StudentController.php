@@ -2,50 +2,45 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Student;
-use frontend\models\search\StudentSearch;
 use Yii;
-use yii\web\Controller;
+use common\components\ApiController;
+use common\models\search\StudentSearch;
+use common\models\Student;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * StudentController implements the CRUD actions for Student model.
  */
-class StudentController extends Controller
+class StudentController extends ApiController
 {
     /**
-     * @inheritDoc
+     * @var
      */
-    public function behaviors(): array
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::class,
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
+    public $modelClass = 'common\models\Student';
+
+    /**
+     * @var
+     */
+    public $searchModel = 'common\models\search\StudentSearch';
 
     /**
      * Lists all Student models.
      *
-     * @return string
+     * @return ActiveDataProvider
      */
-    public function actionIndex(): string
+    public function actionIndex(): ActiveDataProvider
     {
         $searchModel = new StudentSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        //        return $this->render('index', [
+        //            'searchModel' => $searchModel,
+        //            'dataProvider' => $dataProvider,
+        //        ]);
+
+        return $dataProvider;
     }
 
     /**
@@ -64,50 +59,59 @@ class StudentController extends Controller
     /**
      * Creates a new Student model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return array|Student|string
      */
     public function actionCreate()
     {
         $model = new Student();
 
+        //        $model->load(Yii::$app->request->post());
+        //        echo "<pre>";
+        //        print_r($model->attributes);
+        //        echo "</pre>";
+        //        exit();
+
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+
+//            var_dump(Yii::$app->request->bodyParams);
+//            die();
+
+            if ($model->load($this->request->post(), '') && $model->save()) {
+
+                return $model;
             }
         } else {
-            $model->loadDefaultValues();
+            return $model->getErrors();
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return 'invalid request';
     }
 
     /**
      * Updates an existing Student model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|\yii\web\Response
+     * @return string|Student
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
+
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPut && $model->load($this->request->post(), '') && $model->save()) {
+
+            return $model;
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return 'invalid request';
     }
 
     /**
      * Deletes an existing Student model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return \yii\web\Response
+     * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

@@ -22,7 +22,7 @@ class m130524_201442_user extends Migration
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
             'email' => $this->string()->notNull()->unique(),
-            'role' => $this->string()->defaultValue('client'),
+            'role' => $this->string()->defaultValue(5),
 
             'status' => $this->smallInteger()->notNull()->defaultValue(1),
             'created_at' => $this->integer()->notNull(),

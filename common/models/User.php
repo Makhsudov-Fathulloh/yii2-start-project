@@ -15,7 +15,7 @@ use yii\web\IdentityInterface;
  * @property string $username
  * @property string $password_hash
  * @property string $password_reset_token
- * @property string $verification_token
+ * @property string $access_token
  * @property string $email
  * @property string $role
  * @property string $auth_key
@@ -30,9 +30,9 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
 
-    const ROLE_ADMIN = 'admin';
-    const ROLE_CLIENT = 'client';
-    const ROLE_TEACHER = 'teacher';
+    const ROLE_ADMIN = 3;
+    const ROLE_TEACHER = 4;
+    const ROLE_CLIENT = 5;
 
     /**
      * {@inheritdoc}
@@ -76,7 +76,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['access_token' => $token, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -189,6 +189,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function generateAuthKey()
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    /**
+     * Generates new access_token
+     */
+    public function generateAccessToken()
+    {
+        $this->access_token = Yii::$app->security->generateRandomString();
     }
 
     /**

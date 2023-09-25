@@ -2,49 +2,40 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Answer;
-use frontend\models\search\AnswerSearch;
-use yii\web\Controller;
+use Yii;
+use common\models\Answer;
+use common\models\search\AnswerSearch;
+use common\components\ApiController;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * AnswerController implements the CRUD actions for Answer model.
  */
-class AnswerController extends Controller
+class AnswerController extends ApiController
 {
     /**
-     * @inheritDoc
+     * @var
      */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
+    public $modelClass = 'common\models\Answer';
+
+    /**
+     * @var
+     */
+    public $searchModel = 'common\models\search\AnswerSearch';
 
     /**
      * Lists all Answer models.
      *
-     * @return string
+     * @return ActiveDataProvider
      */
-    public function actionIndex()
+    public function actionIndex(): ActiveDataProvider
     {
         $searchModel = new AnswerSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        return $dataProvider;
     }
 
     /**
@@ -63,50 +54,48 @@ class AnswerController extends Controller
     /**
      * Creates a new Answer model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return array|Answer|string
      */
     public function actionCreate()
     {
         $model = new Answer();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post(), '') && $model->save()) {
+
+                return $model;
             }
         } else {
-            $model->loadDefaultValues();
+            return $model->getErrors();
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return 'invalid request';
     }
 
     /**
      * Updates an existing Answer model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|\yii\web\Response
+     * @return string|Answer
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPut && $model->load($this->request->post(), '') && $model->save()) {
+
+            return $model;
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return 'invalid request';
     }
 
     /**
      * Deletes an existing Answer model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return \yii\web\Response
+     * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

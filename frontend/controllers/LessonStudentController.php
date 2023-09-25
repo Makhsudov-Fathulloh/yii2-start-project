@@ -2,49 +2,40 @@
 
 namespace frontend\controllers;
 
-use frontend\models\LessonStudent;
-use frontend\models\search\LessonStudentSearch;
-use yii\web\Controller;
+use Yii;
+use common\components\ApiController;
+use common\models\LessonStudent;
+use common\models\search\LessonStudentSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * LessonStudentController implements the CRUD actions for LessonStudent model.
  */
-class LessonStudentController extends Controller
+class LessonStudentController extends ApiController
 {
     /**
-     * @inheritDoc
+     * @var
      */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
-                ],
-            ]
-        );
-    }
+    public $modelClass = 'common\models\LessonStudent';
+
+    /**
+     * @var
+     */
+    public $searchModel = 'common\models\search\LessonStudentSearch';
 
     /**
      * Lists all LessonStudent models.
      *
-     * @return string
+     * @return ActiveDataProvider
      */
-    public function actionIndex()
+    public function actionIndex(): ActiveDataProvider
     {
         $searchModel = new LessonStudentSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        return $dataProvider;
     }
 
     /**
@@ -63,50 +54,47 @@ class LessonStudentController extends Controller
     /**
      * Creates a new LessonStudent model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return array|LessonStudent|string
      */
     public function actionCreate()
     {
         $model = new LessonStudent();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post(), '') && $model->save()) {
+                return $model;
             }
         } else {
-            $model->loadDefaultValues();
+            return $model->getErrors();
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return 'invalid request';
     }
 
     /**
      * Updates an existing LessonStudent model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|\yii\web\Response
+     * @return string|LessonStudent
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPut && $model->load($this->request->post(), '') && $model->save()) {
+
+            return $model;
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return 'invalid request';
     }
 
     /**
      * Deletes an existing LessonStudent model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return \yii\web\Response
+     * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)

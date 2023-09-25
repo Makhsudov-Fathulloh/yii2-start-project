@@ -31,7 +31,7 @@ class m230816_085318_student extends Migration
         $this->addForeignKey(
             'fk-student-user_id-user-id',
             '{{%student}}',
-            'id',
+            'user_id',
             '{{%user}}',
             'id',
             'CASCADE'
