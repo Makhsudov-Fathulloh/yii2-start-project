@@ -94,14 +94,17 @@ class LessonController extends ApiController
      * Deletes an existing Lesson model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return Response
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return array(
+            'status' => 1,
+            'message' => 'successfully deleted'
+        );
     }
 
     /**

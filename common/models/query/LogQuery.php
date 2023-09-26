@@ -2,15 +2,12 @@
 
 namespace common\models\query;
 
-use common\models\Test;
-use yii\db\ActiveRecord;
-
 /**
- * This is the ActiveQuery class for [[\frontend\models\Test]].
+ * This is the ActiveQuery class for [[\common\models\Log]].
  *
- * @see \common\models\Test
+ * @see \common\models\Log
  */
-class TestQuery extends \yii\db\ActiveQuery
+class LogQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -19,7 +16,7 @@ class TestQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Test[]|array
+     * @return \common\models\Log[]|array
      */
     public function all($db = null)
     {
@@ -28,7 +25,7 @@ class TestQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return array|ActiveRecord|null
+     * @return \common\models\Log|array|null
      */
     public function one($db = null)
     {

@@ -2,44 +2,34 @@
 
 namespace frontend\controllers;
 
-use Yii;
 use common\components\ApiController;
-use common\models\Question;
-use common\models\search\QuestionSearch;
+use common\models\Log;
+use common\models\search\LogSearch;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
+
 
 /**
- * QuestionController implements the CRUD actions for Question model.
+ * LogController implements the CRUD actions for Log model.
  */
-class QuestionController extends ApiController
+class LogController extends ApiController
 {
     /**
-     * @var
-     */
-    public $modelClass = 'common\models\Question';
-
-    /**
-     * @var
-     */
-    public $searchModel = 'common\models\search\QuestionSearch';
-
-    /**
-     * Lists all Question models.
+     * Lists all Log models.
      *
      * @return ActiveDataProvider
      */
-    public function actionIndex(): ActiveDataProvider
+    public function actionIndex()
     {
-        $searchModel = new QuestionSearch();
+        $searchModel = new LogSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $dataProvider;
     }
 
     /**
-     * Displays a single Question model.
+     * Displays a single Log model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -52,13 +42,13 @@ class QuestionController extends ApiController
     }
 
     /**
-     * Creates a new Question model.
+     * Creates a new Log model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return array|Question|string
+     * @return array|Log|string
      */
     public function actionCreate()
     {
-        $model = new Question();
+        $model = new Log();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post(), '') && $model->save()) {
@@ -72,11 +62,10 @@ class QuestionController extends ApiController
     }
 
     /**
-     * Updates an existing Question model.
+     * Updates an existing Log model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|Question
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return string|Log     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
@@ -91,7 +80,7 @@ class QuestionController extends ApiController
     }
 
     /**
-     * Deletes an existing Question model.
+     * Deletes an existing Log model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return array
@@ -108,15 +97,15 @@ class QuestionController extends ApiController
     }
 
     /**
-     * Finds the Question model based on its primary key value.
+     * Finds the Log model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Question the loaded model
+     * @return Log the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Question::findOne(['id' => $id])) !== null) {
+        if (($model = Log::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

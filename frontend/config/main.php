@@ -48,9 +48,7 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-                \common\components\Api::$apiRules,
-            ]
+            'rules' => \common\components\Api::$apiRules,
         ],
 
     ],
