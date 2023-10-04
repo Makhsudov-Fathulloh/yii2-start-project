@@ -9,12 +9,21 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
-
 /**
  * LogController implements the CRUD actions for Log model.
  */
 class LogController extends ApiController
 {
+    /**
+     * @var
+     */
+    public $modelClass = 'common\models\Log';
+
+    /**
+     * @var
+     */
+    public $searchModel = 'common\models\search\LogSearch';
+
     /**
      * Lists all Log models.
      *

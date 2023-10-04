@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\components\AuthorBehavior;
+use common\components\LogBehavior;
 use common\models\query\StudentQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -32,6 +33,9 @@ class Student extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            'log' => [
+                'class' => LogBehavior::class
+            ],
             'author' => [
                 'class' => AuthorBehavior::class
             ]
